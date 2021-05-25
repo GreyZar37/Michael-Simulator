@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
+    [Header("Player Controller")]
     public float moveInput;
     public float speed;
 
@@ -23,7 +24,10 @@ public class PlayerMovement : MonoBehaviour
     public int ekstraJumpValue;
     private int ekstraJumps;
 
-
+    [Header("Audio")]
+    AudioSource audioSource;
+    public AudioClip Yeah;
+    public float pitch;
 
 
 
@@ -33,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -64,14 +68,14 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-
+        
 
         if (isGrounded == true)
         {
             ekstraJumps = ekstraJumpValue;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && ekstraJumps > 0)
+        if (Input.GetKeyDown(KeyCode.W) && ekstraJumps > 0)
         {
             rb.velocity = Vector2.up * jumpForce;
             ekstraJumps--;
@@ -79,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        else if (Input.GetKeyDown(KeyCode.Space) && ekstraJumps == 0 && isGrounded == true)
+        else if (Input.GetKeyDown(KeyCode.W) && ekstraJumps == 0 && isGrounded == true)
         {
             rb.velocity = Vector2.up * jumpForce;
 
@@ -87,7 +91,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            pitch = Random.Range(0.9f,1.1f);
+            audioSource.PlayOneShot(Yeah);
+            audioSource.pitch = pitch;
 
+            
+            
+        }
 
     }
     public void Flip()
