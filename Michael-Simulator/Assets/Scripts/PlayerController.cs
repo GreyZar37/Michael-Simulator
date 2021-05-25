@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
 
     [Header("Player Controller")]
@@ -29,6 +29,12 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip Yeah;
     public float pitch;
 
+    [Header("Shooting")]
+
+    public GameObject bullet;
+    public Transform shootingPosition;
+
+    private 
 
 
 
@@ -38,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -97,8 +104,7 @@ public class PlayerMovement : MonoBehaviour
             audioSource.PlayOneShot(Yeah);
             audioSource.pitch = pitch;
 
-            
-            
+            Instantiate(bullet, shootingPosition.position, shootingPosition.rotation);
         }
 
     }
@@ -108,5 +114,9 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Rotate(0f, 180f, 0);
     }
+
+
 }
+
+
 
