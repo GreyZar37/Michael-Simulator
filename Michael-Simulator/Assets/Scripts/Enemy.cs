@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public GameObject enemy;
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -19,6 +19,20 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        speed = speed*-1;
+        if (collision.gameObject.tag == "Player")
+        {
+
+            speed = speed * -1;
+        }
+        else
+        {
+            speed = speed * -1;
+        }
+
+    }
+
+    public void Damage(int takeDamage, int health)
+    {
+        health -= takeDamage;
     }
 }
