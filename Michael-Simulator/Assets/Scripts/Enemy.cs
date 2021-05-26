@@ -5,7 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed;
-    public GameObject enemy;
+    public float distance;
+
+    private bool movingRight = true;
+
+    public Transform groundDetection;
+
     void Start()
     {
         
@@ -13,12 +18,25 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        enemy.transform.position = new Vector2((speed * Time.deltaTime + enemy.transform.position.x), transform.position.y);
 
+        
+
+        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, distance);
+        if (groundInfo.collider == false)
+        {
+            if(movingRight == true)
+            {
+                transform.eulerAngles = new Vector3(0, -180,0);
+                movingRight = false;
+            }
+            else if (movingRight == false)
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                movingRight = true;
+            }
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        speed = speed*-1;
-    }
+   
 }

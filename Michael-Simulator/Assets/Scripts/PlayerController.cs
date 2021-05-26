@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     public Transform shootingPosition;
 
-    private 
+    private float currentTimer;
+    private float cooldownTimer = 0.4f;
 
 
 
@@ -75,7 +76,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
-        
+        currentTimer -= Time.deltaTime;
 
         if (isGrounded == true)
         {
@@ -98,14 +99,20 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(currentTimer <= 0)
         {
-            pitch = Random.Range(0.9f,1.1f);
-            audioSource.PlayOneShot(Yeah);
-            audioSource.pitch = pitch;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(Yeah);
+                audioSource.pitch = pitch;
 
-            Instantiate(bullet, shootingPosition.position, shootingPosition.rotation);
+                Instantiate(bullet, shootingPosition.position, shootingPosition.rotation);
+                currentTimer = cooldownTimer;
+            }
         }
+
+       
 
     }
     public void Flip()
