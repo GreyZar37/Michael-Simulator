@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public GameObject bullet;
     public float bulletSpeed = 0f;
-    private float bulletlocation = 0f;
+    public int playerDamage = 1;
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -22,13 +22,21 @@ public class Bullet : MonoBehaviour
         rb.velocity = transform.right * bulletSpeed;
 
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            Destroy(collision.gameObject);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(playerDamage);
+            print("hit");
+
+        }
+        else
+        {
+            Destroy(gameObject);
+
         }
     }
+
+   
 }
