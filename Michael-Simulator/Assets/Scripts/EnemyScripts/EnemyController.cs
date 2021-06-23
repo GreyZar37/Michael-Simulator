@@ -2,21 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyController: MonoBehaviour
 {
+
+    [Header("Enemy Controller")]
+
     public float speed;
     public float distance;
-    int maxHealth = 3;
-    int currentHealth;
-
+    
     private bool movingRight = true;
 
     public Transform groundDetection;
 
     Rigidbody2D rb;
 
+    EnemyDamager dm;
+
+    [Header("Health")]
+    int maxHealth = 3;
+    int currentHealth;
+
     void Start()
     {
+        dm = GetComponent<EnemyDamager>();
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -28,7 +36,18 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        rb.velocity = transform.right * speed;
+        if(dm.gotKnockbacked == true)
+        {
+
+        }
+        else
+        {
+            rb.velocity = transform.right * speed;
+        }
+        
+        
+
+
         RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, distance);
         if (groundInfo.collider == false)
         {
@@ -45,7 +64,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void enemyTakeDamage(int damage)
     {
         currentHealth -= damage;
         print(currentHealth);

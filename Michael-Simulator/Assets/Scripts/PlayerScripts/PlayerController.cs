@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private bool facingRight = true;
 
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
 
     public static bool isGrounded;
     public Transform groundCheck;
@@ -34,15 +35,18 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     public Transform shootingPosition;
 
-    private float currentTimer;
-    private float cooldownTimer = 0.4f;
+    private float currentShootingTimer;
+    private float shootingCooldownTimer = 0.4f;
 
-
+    [Header("Stats")]
+    public int maxHealth = 3;
+    public int currentHealth;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
 
@@ -75,8 +79,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //Health 
+        #region
+        if(currentHealth <= 0)
+        {
+            print("You are dead"); 
+        }
+        #endregion
 
-        currentTimer -= Time.deltaTime;
+
+        //Player Controller
+        #region
+
+        currentShootingTimer -= Time.deltaTime;
 
         if (isGrounded == true)
         {
@@ -99,7 +114,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if(currentTimer <= 0)
+        if(currentShootingTimer <= 0)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -108,11 +123,11 @@ public class PlayerController : MonoBehaviour
                 audioSource.pitch = pitch;
 
                 Instantiate(bullet, shootingPosition.position, shootingPosition.rotation);
-                currentTimer = cooldownTimer;
+                currentShootingTimer = shootingCooldownTimer;
             }
         }
 
-       
+        #endregion
 
     }
     public void Flip()
@@ -122,7 +137,10 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0f, 180f, 0);
     }
 
-
+    public void playerTakeDamage(int damage)
+    {
+        currentHealth -= damage;
+    }
 }
 
 
